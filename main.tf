@@ -5,6 +5,7 @@ provider "kubernetes" {
 
 provider "aws" {
   region = var.region
+  token = var.aws_session_token
 }
 
 data "aws_availability_zones" "available" {}
