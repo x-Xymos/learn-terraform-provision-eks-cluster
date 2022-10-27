@@ -2,6 +2,10 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "18.26.6"
 
+  node_security_group_tags = {
+    "kubernetes.io/cluster/${local.cluster_name}" = null
+  }
+
   cluster_name    = local.cluster_name
   cluster_version = "1.22"
 
@@ -24,34 +28,15 @@ module "eks" {
       instance_types = ["t3.small"]
 
       min_size     = 1
-      max_size     = 3
-      desired_size = 2
-
-      pre_bootstrap_user_data = <<-EOT
-      echo 'foo bar'
-      EOT
+      max_size     = 1
+      desired_size = 1
 
       vpc_security_group_ids = [
         aws_security_group.node_group_one.id
       ]
     }
-
-    two = {
-      name = "node-group-2"
-
-      instance_types = ["t3.medium"]
-
-      min_size     = 1
-      max_size     = 2
-      desired_size = 1
-
-      pre_bootstrap_user_data = <<-EOT
-      echo 'foo bar'
-      EOT
-
-      vpc_security_group_ids = [
-        aws_security_group.node_group_two.id
-      ]
-    }
   }
 }
+
+#https://docs.aws.amazon.com/eks/latest/userguide/calico.html
+
