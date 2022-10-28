@@ -26,3 +26,18 @@ terraform {
     region         = "eu-west-2"
   }
 }
+
+
+resource "aws_secretsmanager_secret" "reach" {
+  name = "reach"
+}
+
+resource "aws_secretsmanager_secret_version" "reach_licence" {
+  secret_id     = aws_secretsmanager_secret.reach.id
+  secret_string = jsonencode(
+    reach_licence_key = "licence"
+    reach_licence_signature = "signature"
+    acr_username = "username"
+    acr_password = "password"
+  )
+}
