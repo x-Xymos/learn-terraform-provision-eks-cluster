@@ -28,11 +28,6 @@ terraform {
 }
 
 
-data "local_file" "config" {
-    filename = "/root/.kube/config"
-}
-
-
 provider "helm" {
   kubernetes {
     host                   = module.eks.cluster_endpoint
