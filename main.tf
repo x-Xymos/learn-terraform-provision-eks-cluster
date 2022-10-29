@@ -28,16 +28,6 @@ terraform {
 }
 
 
-
-terraform {
-  required_providers {
-    helm = {
-      source  = "hashicorp/helm"
-      version = "= 2.6.0"
-    }
-  }
-}
-
 resource "helm_release" "ingress-nginx" {
   name       = "ingress"
   repository = "https://charts.bitnami.com/bitnami"
