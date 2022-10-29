@@ -57,6 +57,9 @@ resource "helm_release" "ingress-nginx" {
   chart      = "nginx-ingress-controller"
   namespace  = "ingress-nginx"
   version    = "9.1.10"
+  depends_on = [
+    kubernetes_namespace.ingress_namespace
+  ]
 }
 
 
