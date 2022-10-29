@@ -42,6 +42,14 @@ provider "helm" {
 }
 
 
+resource "kubernetes_namespace" "ingress_namespace" {
+  metadata {
+    name = "ingress-nginx"
+    labels = {
+      "reach-ingress" = "true"
+    }
+  }
+}
 
 resource "helm_release" "ingress-nginx" {
   name       = "ingress"
