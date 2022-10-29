@@ -35,15 +35,11 @@ data "local_file" "config" {
 
 provider "helm" {
   kubernetes {
-    host                   = yamldecode(data.local_file.config.content).clusters[0].cluster.server
-    cluster_ca_certificate = yamldecode(data.local_file.config.content).clusters[0].cluster.certificate-authority-data
+    host                   = module.eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   }
 }
 
-provider "kubernetes" {
-    host                   = yamldecode(data.local_file.config.content).clusters[0].cluster.server
-    cluster_ca_certificate = yamldecode(data.local_file.config.content).clusters[0].cluster.certificate-authority-data
-}
 
 resource "helm_release" "ingress-nginx" {
   name       = "ingress"
