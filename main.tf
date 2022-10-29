@@ -28,6 +28,25 @@ terraform {
 }
 
 
+
+terraform {
+  required_providers {
+    helm = {
+      source  = "hashicorp/helm"
+      version = "= 2.6.0"
+    }
+  }
+}
+
+resource "helm_release" "ingress-nginx" {
+  name       = "ingress"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "nginx-ingress-controller"
+  namespace  = "ingress-nginx"
+  version    = "9.1.10"
+}
+
+
 # resource "aws_secretsmanager_secret" "reach" {
 #   name = "reach"
 # }
