@@ -28,6 +28,23 @@ terraform {
 }
 
 
+data "local_file" "config" {
+    filename = "/root/.kube/config"
+}
+
+
+provider "helm" {
+  kubernetes {
+    host                   = yamldecode(data.local_file.config.content).clusters[0].cluster.server
+    cluster_ca_certificate = yamldecode(data.local_file.config.content).clusters[0].cluster.certificate-authority-data
+  }
+}
+
+provider "kubernetes" {
+    host                   = yamldecode(data.local_file.config.content).clusters[0].cluster.server
+    cluster_ca_certificate = yamldecode(data.local_file.config.content).clusters[0].cluster.certificate-authority-data
+}
+
 resource "helm_release" "ingress-nginx" {
   name       = "ingress"
   repository = "https://charts.bitnami.com/bitnami"
